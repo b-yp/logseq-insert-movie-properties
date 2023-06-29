@@ -1,5 +1,5 @@
 import { camelCaseToUnderscore, objectToParams, underscoreToCamelCase } from "./utils";
-import { SearchMoviesParams, SearchMoviesResponse, movieCreditsParams, movieCreditsResponse, movieDetailParams, movieDetailResponse } from "./type";
+import { PersonDetailParams, PersonDetailResponse, PersonListsParams, PersonListsResponse, SearchMoviesParams, SearchMoviesResponse, movieCreditsParams, movieCreditsResponse, movieDetailParams, movieDetailResponse } from "./type";
 
 const apiBaseUrl = 'https://api.themoviedb.org/3';
 // const baseUrl = 'https://www.themoviedb.org'
@@ -46,5 +46,18 @@ export const api = {
    * @param param movieCreditsParams
    * @returns Promise<movieCreditsResponse>
    */
-  fetchMovieCredits: (movieId: number, param: movieCreditsParams) => fetchFn<movieCreditsResponse>(`/movie/${movieId}/credits`, objectToParams(underscoreToCamelCase(param)))
+  fetchMovieCredits: (movieId: number, param: movieCreditsParams) => fetchFn<movieCreditsResponse>(`/movie/${movieId}/credits`, objectToParams(underscoreToCamelCase(param))),
+  /**
+   * 根据人员 名称（昵称外号都可以） 查询人员列表
+   * @param params PersonListsParams
+   * @returns Promise<PersonListsParams>
+   */
+  fetchPersonList: (params: PersonListsParams) => fetchFn<PersonListsResponse>('/search/person', objectToParams(camelCaseToUnderscore(params))),
+  /**
+   * 根据人员 id 查询人员详情
+   * @param personId nubmer
+   * @param params PersonDetailParams
+   * @returns Promise<PersonDetailResponse>
+   */
+  fetchPersonDetail: (personId: number, params: PersonDetailParams) => fetchFn<PersonDetailResponse>(`/person/${personId}`, objectToParams(camelCaseToUnderscore(params)))
 }

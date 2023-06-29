@@ -46,6 +46,10 @@ export const toCamelCase = (str: string) => str.replace(/_(\w)/g, (match, letter
  * @returns 
  */
 export const underscoreToCamelCase = (object: { [key: string]: any; }): { [key: string]: any; } => {
+  if (typeof object !== 'object') {
+    return object
+  }
+
   const nweObject = removeEmptyProperties(object)
   const result: { [key: string]: any; } = {}
   for (const key in nweObject) {
@@ -84,13 +88,39 @@ export const objectToProperties = (object: {
   [key: string]: {
     en: string
     zh: string
-    value: string | number
+    value: string | number | null
   }
 }, isEnglish: boolean): string => {
   const result = []
   for (const key  in object) {
     const k = isEnglish ? object[key].en : object[key].zh
+    // TODO: 这里要过滤掉 value 为空的属性，但暂时留着，便于调试
     result.push(`${k}:: ${object[key].value || '🤡'}`)
   }
   return result.join('\n')
+}
+
+export const getGender = (value: number, language: string) => {
+  let gender: string
+  if (value === 1) {
+    if (language === 'zh-CN') {
+      gender = '女'
+    } else {
+      gender = 'Girl'
+    }
+  } else if (value === 2) {
+    if (language === 'zh-CN') {
+      gender = '男'
+    } else {
+      gender = 'Boy'
+    }
+  } else {
+    if (language === 'zh-CN') {
+      gender = '未知'
+    } else {
+      gender = 'Unknown'
+    }
+  }
+
+  return gender
 }

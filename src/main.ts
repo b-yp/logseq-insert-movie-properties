@@ -3,8 +3,8 @@ import "@logseq/libs";
 import { logseq as PL } from "../package.json";
 
 import { api, imageUrl } from "./api";
-import { SearchMoviesParams, movieCreditsParams, movieDetailParams } from "./type";
-import { objectToProperties } from "./utils";
+import { PersonDetailParams, PersonListsParams, SearchMoviesParams, movieCreditsParams, movieDetailParams } from "./type";
+import { getGender, objectToProperties } from "./utils";
 import { settings } from "./settings";
 
 const pluginId = PL.id;
@@ -15,6 +15,10 @@ function main() {
   // 注册设置项
   logseq.useSettingsSchema(settings)
 
+  // 获取设置的属性语言
+  const isEnglish = logseq.settings ? logseq.settings['properties_language'] : true
+
+  // 插入电影信息
   const insertMovieProperties = async (language: string) => {
     const page = await logseq.Editor.getCurrentPage()
 
@@ -45,13 +49,11 @@ function main() {
     // 查询电影工作人员列表
     const movieCreditsRes = await api.fetchMovieCredits(movie.id, movieCeditsParams)
 
-    // 获取设置的属性语言
-    const isEnglish = logseq.settings ? logseq.settings['properties_language'] : true
-
     /**
      * 这里对演员处理一下，只取 (Acting)
      */
-    const movieActors = movieCreditsRes.crew.filter(c => c.knownForDepartment === 'Acting')
+    const movieActors = movieCreditsRes.cast.filter(c => c.knownForDepartment === 'Acting')
+
     /**
      * 这里要对全体工作人员处理一下，只取 导演 (Director) 、编剧 (Screenplay) ，不然列表太长爆炸了，而且别人可能也不会关心其他的
      */
@@ -117,7 +119,7 @@ function main() {
       runtime: {
         en: 'runtime',
         zh: '时长',
-        value: `${movieDetailRes.runtime} ${isEnglish ? 'minute': '分钟'}`
+        value: `${movieDetailRes.runtime} ${isEnglish ? 'minute' : '分钟'}`
       },
       genres: {
         en: 'genres',
@@ -185,11 +187,89 @@ function main() {
     logseq.Editor.appendBlockInPage(page.uuid, objectToProperties(moviePropertiesOptions, isEnglish))
   }
 
-  // 插入英文电影信息
+  const insertPersonProperties = async (language: string) => {
+    const page = await logseq.Editor.getCurrentPage()
+
+    if (!page?.name) return
+
+    // 查询人员列表参数
+    const personListsParams: PersonListsParams = {
+      language,
+      query: page.name
+    }
+
+    // 查询人员详情参数
+    const personDetailParams: PersonDetailParams = {
+      language,
+    }
+
+    // 查询人员列表
+    // 这里也不考虑供用户选择，直接取第一条，最相关的
+    const personListsRes = await api.fetchPersonList(personListsParams)
+
+    // 查询人员详情
+    const personDetailRes = await api.fetchPersonDetail(personListsRes.results[0].id, personDetailParams)
+
+    // 要插入的人员内容
+    const personPropertiesOptions: {
+      [key: string]: {
+        en: string
+        zh: string
+        value: string | number | null
+      }
+    } = {
+      name: {
+        en: 'name',
+        zh: '姓名',
+        value: personDetailRes.name,
+      },
+      alias: {
+        en: 'alias',
+        zh: 'alias',
+        value: personDetailRes.alsoKnownAs.map(i => `#[[${i}]]`).join(' '),
+      },
+      gender: {
+        en: 'gender',
+        zh: '性别',
+        value: getGender(personDetailRes.gender, language)
+      },
+      birthday: {
+        en: 'birthday',
+        zh: '生日',
+        value: personDetailRes.birthday,
+      },
+      deathday: {
+        en: 'deathday',
+        zh: '死亡日期',
+        value: personDetailRes.deathday,
+      },
+      homepage: {
+        en: 'homepage',
+        zh: '主页',
+        value: personDetailRes.homepage
+      },
+      imdbId: {
+        en: 'IMDB_ID',
+        zh: 'IMDB ID',
+        value: personDetailRes.imdbId
+      },
+    }
+
+    // 查询到人员详情，使用 logseq API 更新到页面
+    logseq.Editor.appendBlockInPage(page.uuid, objectToProperties(personPropertiesOptions, isEnglish))
+  }
+
+  // 插入英文电影信息菜单项
   logseq.App.registerPageMenuItem('Insert movie properties', () => insertMovieProperties('en-US'))
 
-  // 插入中文电影信息
-  logseq.App.registerPageMenuItem('插入电影属性', () => insertMovieProperties('cn-ZH'))
+  // 插入中文电影信息菜单项
+  logseq.App.registerPageMenuItem('插入电影属性', () => insertMovieProperties('zh-CN'))
+
+  // 插入英文演员信息菜单项
+  logseq.App.registerPageMenuItem('Insert person properties', () => insertPersonProperties('en-US'))
+
+  // 插入中文演员信息菜单项
+  logseq.App.registerPageMenuItem('插入人物属性', () => insertPersonProperties('zh-CN'))
 }
 
 logseq.ready(main).catch(console.error);

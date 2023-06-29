@@ -1,3 +1,38 @@
+interface Person {
+  /**
+   * 是否是成人
+   */
+  adult: boolean
+  /**
+   * 性别 1: 女生 2: 男生
+   */
+  gender: number
+  /**
+   * ID
+   */
+  id: number
+  /**
+   * 已知角色
+   */
+  knownForDepartment: string
+  /**
+   * 姓名
+   */
+  name: string
+  /**
+   * 原始名称
+   */
+  originalName: string
+  /**
+   * 人气
+   */
+  popularity: number
+  /**
+   * 形象
+   */
+  profilePath: string
+}
+
 /**
  * 查询电影列表参数
  */
@@ -266,38 +301,9 @@ export interface movieCreditsResponse {
   /**
    * 演员
    */
-  cast: {
+  cast: (Person & {
     /**
-     * 是否是成人
-     */
-    adult: boolean
-    /**
-     * 性别 1: 女生 2: 男生
-     */
-    gender: number
-    /**
-     * ID
-     */
-    id: number
-    knownForDepartment: string
-    /**
-     * 姓名
-     */
-    name: string
-    /**
-     * 原始名称
-     */
-    originalName: string
-    /**
-     * 人气
-     */
-    popularity: number
-    /**
-     * 形象
-     */
-    profilePath: string
-    /**
-     * 人物
+     * 饰演人物
      */
     character: string
     /**
@@ -308,7 +314,7 @@ export interface movieCreditsResponse {
      * 排序
      */
     order: number
-  }[]
+  })[]
   /**
    * 全体工作人员
    */
@@ -355,4 +361,97 @@ export interface movieCreditsResponse {
      */
     job: string
   }[]
+}
+
+/**
+ * 查询人物列表参数
+ */
+export interface PersonListsParams {
+  /**
+   * 姓名 （包括昵称外号等其他名称）
+   */
+  query: string
+  /**
+   * 是否包括成人 （默认 false）
+   */
+  includeAdult?: boolean
+  /**
+   * 语言 (默认 en-US)
+   */
+  language?: string
+  /**
+   * 页数
+   */
+  page?: number
+}
+
+/**
+ * 查询人物列表响应
+ */
+export interface PersonListsResponse {
+  /**
+   * 页数
+   */
+  page: number
+  /**
+   * 人物列表
+   */
+  results: (Person & {
+    /**
+     * 已知的
+     */
+    knownFor: {
+      /**
+       * 标题
+       */
+      title: string
+    }[]
+  })[]
+}
+
+/**
+ * 查询人物详情参数
+ */
+export interface PersonDetailParams {
+  appendToResponse?: string
+  language?: string
+}
+
+/**
+ * 查询人物详情响应
+ */
+export interface PersonDetailResponse extends Person {
+  /**
+   * 别名
+   */
+  alsoKnownAs: string[],
+  /**
+   * 简介
+   */
+  biography: string
+  /**
+   * 生日
+   */
+  birthday: string
+  /**
+   * 死亡日期
+   */
+  deathday: string | null
+  /**
+   * 主页
+   */
+  homepage: string | null
+  /**
+   * IMDB ID
+   */
+  imdbId: string
+  /**
+   * 角色 ？
+   * TODO: 这个可以用枚举感觉
+   */
+  knownForDepartment: string
+  /**
+   * 出生地
+   */
+  placeOfBirth: string
 }
