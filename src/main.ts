@@ -183,8 +183,14 @@ function main() {
       },
     }
 
-    // 查询到电影详情，使用 logseq API 更新到页面
-    logseq.Editor.appendBlockInPage(page.uuid, objectToProperties(moviePropertiesOptions, isEnglish))
+    /**
+     * 查询到电影详情，使用 logseq API 更新到页面
+     * TODO: 这里不解的是 prependBlockInPage 居然不是在最前面插入, 那么修改已有 page 的 properties 应该用什么方法呢 ？ 
+     * 看到 discord 也有人有这样的疑问:  https://discord.com/channels/725182569297215569/766475028978991104/1076386778937839616
+     * 插入属性块还有另一种写法: logseq.Editor.prependBlockInPage(page.uuid, '', { properties: { ... } })
+     * 我这里就不改了，感觉区别不大
+     */
+    logseq.Editor.prependBlockInPage(page.uuid, objectToProperties(moviePropertiesOptions, isEnglish))
   }
 
   const insertPersonProperties = async (language: string) => {
@@ -256,7 +262,7 @@ function main() {
     }
 
     // 查询到人员详情，使用 logseq API 更新到页面
-    logseq.Editor.appendBlockInPage(page.uuid, objectToProperties(personPropertiesOptions, isEnglish))
+    logseq.Editor.prependBlockInPage(page.uuid, objectToProperties(personPropertiesOptions, isEnglish))
   }
 
   // 插入英文电影信息菜单项
