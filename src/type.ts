@@ -1,3 +1,42 @@
+interface Person {
+  /**
+   * 是否是成人
+   */
+  adult: boolean
+  /**
+   * 性别 1: 女生 2: 男生
+   */
+  gender: number
+  /**
+   * ID
+   */
+  id: number
+  /**
+   * 已知角色
+   * TODO: 这个可以用枚举感觉
+   */
+  knownForDepartment: string
+  /**
+   * 姓名
+   */
+  name: string
+  /**
+   * 原始名称
+   */
+  originalName: string
+  /**
+   * 人气
+   */
+  popularity: number
+  /**
+   * 形象
+   */
+  profilePath: string
+}
+
+/**
+ * 查询电影列表参数
+ */
 export interface SearchMoviesParams {
   /**
    * 电影名称
@@ -29,6 +68,9 @@ export interface SearchMoviesParams {
   year?: string
 }
 
+/**
+ * 查询电影列表响应
+ */
 export interface SearchMoviesResponse {
   /**
    * 电影列表
@@ -69,6 +111,9 @@ export interface SearchMoviesResponse {
   totalResults: number
 }
 
+/**
+ * 查询电影详情参数
+ */
 export interface movieDetailParams {
   /**
    * 语言
@@ -80,6 +125,9 @@ export interface movieDetailParams {
   appendToResponse?: string
 }
 
+/**
+ * 查询电影详情响应
+ */
 export interface movieDetailResponse {
   /**
    * 是否是成人内容
@@ -234,4 +282,172 @@ export interface movieDetailResponse {
    * 总票数
    */
   voteCount: number
+}
+
+/**
+ * 查询制作人员信息参数
+ */
+export interface movieCreditsParams {
+  language?: string
+}
+
+/**
+ * 查询制作人员信息响应
+ */
+export interface movieCreditsResponse {
+  /**
+   * movie id
+   */
+  id: number
+  /**
+   * 演员
+   */
+  cast: (Person & {
+    /**
+     * 饰演人物
+     */
+    character: string
+    /**
+     * credit_id
+     */
+    creditId: string
+    /**
+     * 排序
+     */
+    order: number
+  })[]
+  /**
+   * 全体工作人员
+   */
+  crew: {
+    /**
+     * 是否是成人
+     */
+    adult: boolean
+    /**
+     * 性别 1: 女生 2: 男生
+     */
+    gender: number
+    /**
+     * ID
+     */
+    id: number
+    knownForDepartment: string
+    /**
+     * 姓名
+     */
+    name: string
+    /**
+     * 原始名称
+     * */
+    originalName: string
+    /**
+     * 人气
+     */
+    popularity: number
+    /**
+     * 形象
+     */
+    profilePath: string
+    /**
+     * credit_id
+     */
+    creditId: string
+    /**
+     * 部门
+     */
+    department: string
+    /**
+     * 工作
+     */
+    job: string
+  }[]
+}
+
+/**
+ * 查询人物列表参数
+ */
+export interface PersonListsParams {
+  /**
+   * 姓名 （包括昵称外号等其他名称）
+   */
+  query: string
+  /**
+   * 是否包括成人 （默认 false）
+   */
+  includeAdult?: boolean
+  /**
+   * 语言 (默认 en-US)
+   */
+  language?: string
+  /**
+   * 页数
+   */
+  page?: number
+}
+
+/**
+ * 查询人物列表响应
+ */
+export interface PersonListsResponse {
+  /**
+   * 页数
+   */
+  page: number
+  /**
+   * 人物列表
+   */
+  results: (Person & {
+    /**
+     * 已知的
+     */
+    knownFor: {
+      /**
+       * 标题
+       */
+      title: string
+    }[]
+  })[]
+}
+
+/**
+ * 查询人物详情参数
+ */
+export interface PersonDetailParams {
+  appendToResponse?: string
+  language?: string
+}
+
+/**
+ * 查询人物详情响应
+ */
+export interface PersonDetailResponse extends Person {
+  /**
+   * 别名
+   */
+  alsoKnownAs: string[],
+  /**
+   * 简介 (传记)
+   */
+  biography: string
+  /**
+   * 生日
+   */
+  birthday: string
+  /**
+   * 死亡日期
+   */
+  deathday: string | null
+  /**
+   * 主页
+   */
+  homepage: string | null
+  /**
+   * IMDB ID
+   */
+  imdbId: string
+  /**
+   * 出生地
+   */
+  placeOfBirth: string
 }

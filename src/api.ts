@@ -1,5 +1,5 @@
 import { camelCaseToUnderscore, objectToParams, underscoreToCamelCase } from "./utils";
-import { SearchMoviesParams, SearchMoviesResponse, movieDetailParams, movieDetailResponse } from "./type";
+import { PersonDetailParams, PersonDetailResponse, PersonListsParams, PersonListsResponse, SearchMoviesParams, SearchMoviesResponse, movieCreditsParams, movieCreditsResponse, movieDetailParams, movieDetailResponse } from "./type";
 
 const apiBaseUrl = 'https://api.themoviedb.org/3';
 // const baseUrl = 'https://www.themoviedb.org'
@@ -13,7 +13,7 @@ const options = {
   }
 };
 
-const fetchFn = async <T>(url: string, params: string) =>
+const fetchFn = async <T>(url: string, params?: string) =>
   new Promise<T>((resolve, reject) => {
     fetch(`${apiBaseUrl}${url}?${params}`, options)
       .then(response => response.json())
@@ -25,7 +25,6 @@ const fetchFn = async <T>(url: string, params: string) =>
         console.error(err)
       });
   })
-
 
 export const api = {
   /**
@@ -40,5 +39,25 @@ export const api = {
    * @param params movieDetailParams
    * @returns Promise<movieDetailResponse>
    */
-  fetchMovieDetail: (movieId: number, params: movieDetailParams) => fetchFn<movieDetailResponse>(`/movie/${movieId}`, objectToParams(underscoreToCamelCase(params)))
+  fetchMovieDetail: (movieId: number, params: movieDetailParams) => fetchFn<movieDetailResponse>(`/movie/${movieId}`, objectToParams(underscoreToCamelCase(params))),
+  /**
+   * 根据电影 id 查询电影演员和工作人员列表
+   * @param movieId number
+   * @param param movieCreditsParams
+   * @returns Promise<movieCreditsResponse>
+   */
+  fetchMovieCredits: (movieId: number, param: movieCreditsParams) => fetchFn<movieCreditsResponse>(`/movie/${movieId}/credits`, objectToParams(underscoreToCamelCase(param))),
+  /**
+   * 根据人员 名称（昵称外号都可以） 查询人员列表
+   * @param params PersonListsParams
+   * @returns Promise<PersonListsParams>
+   */
+  fetchPersonList: (params: PersonListsParams) => fetchFn<PersonListsResponse>('/search/person', objectToParams(camelCaseToUnderscore(params))),
+  /**
+   * 根据人员 id 查询人员详情
+   * @param personId nubmer
+   * @param params PersonDetailParams
+   * @returns Promise<PersonDetailResponse>
+   */
+  fetchPersonDetail: (personId: number, params: PersonDetailParams) => fetchFn<PersonDetailResponse>(`/person/${personId}`, objectToParams(camelCaseToUnderscore(params)))
 }
