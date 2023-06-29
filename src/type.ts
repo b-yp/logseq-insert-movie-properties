@@ -427,7 +427,7 @@ export interface PersonDetailResponse extends Person {
    */
   alsoKnownAs: string[],
   /**
-   * 简介
+   * 简介 (传记)
    */
   biography: string
   /**

@@ -244,20 +244,15 @@ function main() {
         zh: '生日',
         value: personDetailRes.birthday,
       },
-      placeOfBirth: {
-        en: 'placeOfBirth',
-        zh: '出生地',
-        value: personDetailRes.placeOfBirth
-      },
       profilePath: {
         en: 'profile',
         zh: '头像',
         value: `![](${imageUrl}/t/p/w600_and_h900_bestv2/${personDetailRes.profilePath}){:height 225, :width 150}`, 
       },
-      biography: {
-        en: 'biography',
-        zh: '简介',
-        value: personDetailRes.biography
+      placeOfBirth: {
+        en: 'placeOfBirth',
+        zh: '出生地',
+        value: personDetailRes.placeOfBirth
       },
       popularity: {
         en: 'popularity',
@@ -279,10 +274,18 @@ function main() {
         zh: 'IMDB ID',
         value: personDetailRes.imdbId
       },
+      // 由于人物简介或传记太长了，不宜放在属性里面，所以新建一个 block 插入传记
+      // biography: {
+      //   en: 'biography',
+      //   zh: '简介',
+      //   value: personDetailRes.biography
+      // },
     }
 
     // 查询到人员详情，使用 logseq API 更新到页面
-    logseq.Editor.prependBlockInPage(page.uuid, objectToProperties(personPropertiesOptions, isEnglish))
+    await logseq.Editor.prependBlockInPage(page.uuid, objectToProperties(personPropertiesOptions, isEnglish))
+    // 在此处插入人物简介
+    logseq.Editor.appendBlockInPage(page.uuid, personDetailRes.biography)
   }
 
   // 插入英文电影信息菜单项
