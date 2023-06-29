@@ -1,3 +1,6 @@
+/**
+ * 查询电影列表参数
+ */
 export interface SearchMoviesParams {
   /**
    * 电影名称
@@ -29,6 +32,9 @@ export interface SearchMoviesParams {
   year?: string
 }
 
+/**
+ * 查询电影列表响应
+ */
 export interface SearchMoviesResponse {
   /**
    * 电影列表
@@ -69,6 +75,9 @@ export interface SearchMoviesResponse {
   totalResults: number
 }
 
+/**
+ * 查询电影详情参数
+ */
 export interface movieDetailParams {
   /**
    * 语言
@@ -80,6 +89,9 @@ export interface movieDetailParams {
   appendToResponse?: string
 }
 
+/**
+ * 查询电影详情响应
+ */
 export interface movieDetailResponse {
   /**
    * 是否是成人内容
@@ -234,4 +246,113 @@ export interface movieDetailResponse {
    * 总票数
    */
   voteCount: number
+}
+
+/**
+ * 查询制作人员信息参数
+ */
+export interface movieCreditsParams {
+  language?: string
+}
+
+/**
+ * 查询制作人员信息响应
+ */
+export interface movieCreditsResponse {
+  /**
+   * movie id
+   */
+  id: number
+  /**
+   * 演员
+   */
+  cast: {
+    /**
+     * 是否是成人
+     */
+    adult: boolean
+    /**
+     * 性别 1: 女生 2: 男生
+     */
+    gender: number
+    /**
+     * ID
+     */
+    id: number
+    knownForDepartment: string
+    /**
+     * 姓名
+     */
+    name: string
+    /**
+     * 原始名称
+     */
+    originalName: string
+    /**
+     * 人气
+     */
+    popularity: number
+    /**
+     * 形象
+     */
+    profilePath: string
+    /**
+     * 人物
+     */
+    character: string
+    /**
+     * credit_id
+     */
+    creditId: string
+    /**
+     * 排序
+     */
+    order: number
+  }[]
+  /**
+   * 全体工作人员
+   */
+  crew: {
+    /**
+     * 是否是成人
+     */
+    adult: boolean
+    /**
+     * 性别 1: 女生 2: 男生
+     */
+    gender: number
+    /**
+     * ID
+     */
+    id: number
+    knownForDepartment: string
+    /**
+     * 姓名
+     */
+    name: string
+    /**
+     * 原始名称
+     * */
+    originalName: string
+    /**
+     * 人气
+     */
+    popularity: number
+    /**
+     * 形象
+     */
+    profilePath: string
+    /**
+     * credit_id
+     */
+    creditId: string
+    /**
+     * 部门
+     */
+    department: string
+    /**
+     * 工作
+     */
+    job: string
+  }[]
 }
