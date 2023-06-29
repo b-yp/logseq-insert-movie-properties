@@ -13,6 +13,7 @@ interface Person {
   id: number
   /**
    * 已知角色
+   * TODO: 这个可以用枚举感觉
    */
   knownForDepartment: string
   /**
@@ -445,11 +446,6 @@ export interface PersonDetailResponse extends Person {
    * IMDB ID
    */
   imdbId: string
-  /**
-   * 角色 ？
-   * TODO: 这个可以用枚举感觉
-   */
-  knownForDepartment: string
   /**
    * 出生地
    */

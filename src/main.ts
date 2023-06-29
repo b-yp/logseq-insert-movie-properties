@@ -244,6 +244,26 @@ function main() {
         zh: '生日',
         value: personDetailRes.birthday,
       },
+      placeOfBirth: {
+        en: 'placeOfBirth',
+        zh: '出生地',
+        value: personDetailRes.placeOfBirth
+      },
+      profilePath: {
+        en: 'profile',
+        zh: '头像',
+        value: `![](${imageUrl}/t/p/w600_and_h900_bestv2/${personDetailRes.profilePath}){:height 225, :width 150}`, 
+      },
+      biography: {
+        en: 'biography',
+        zh: '简介',
+        value: personDetailRes.biography
+      },
+      popularity: {
+        en: 'popularity',
+        zh: '人气',
+        value: personDetailRes.popularity
+      },
       deathday: {
         en: 'deathday',
         zh: '死亡日期',
