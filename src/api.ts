@@ -1,11 +1,13 @@
 import { camelCaseToUnderscore, objectToParams, underscoreToCamelCase } from "./utils";
-import { PersonDetailParams, PersonDetailResponse, PersonListsParams, PersonListsResponse, SearchMoviesParams, SearchMoviesResponse, movieCreditsParams, movieCreditsResponse, movieDetailParams, movieDetailResponse } from "./type";
+import { BookResponse, CataLogSearchParams, CataLogSearchResponse, PersonDetailParams, PersonDetailResponse, PersonListsParams, PersonListsResponse, SearchMoviesParams, SearchMoviesResponse, movieCreditsParams, movieCreditsResponse, movieDetailParams, movieDetailResponse } from "./type";
 
 const apiBaseUrl = 'https://api.themoviedb.org/3';
 // const baseUrl = 'https://www.themoviedb.org'
 export const imageUrl = 'https://image.tmdb.org/'
 
-const options = {
+const neodbApiBaseUrl = 'https://neodb.social/api'
+
+const options: RequestInit = {
   method: 'GET',
   headers: {
     accept: 'application/json',
@@ -13,9 +15,30 @@ const options = {
   }
 };
 
+const neodbOptions: RequestInit = {
+  method: 'GET',
+  headers: {
+    accept: 'application/json',
+    Authorization: 'Bearer kB4QrDAETGyZRY5LXYhuyFwOpKio1r'
+  }
+} 
+
 const fetchFn = async <T>(url: string, params?: string) =>
   new Promise<T>((resolve, reject) => {
     fetch(`${apiBaseUrl}${url}?${params}`, options)
+      .then(response => response.json())
+      .then(response => {
+        resolve(underscoreToCamelCase(response) as T)
+      })
+      .catch(err => {
+        reject(err)
+        console.error(err)
+      });
+  })
+
+const fetchNeodbFn = async <T>(url: string, params?: string) =>
+  new Promise<T>((resolve, reject) => {
+    fetch(`${neodbApiBaseUrl}${url}?${params}`, neodbOptions)
       .then(response => response.json())
       .then(response => {
         resolve(underscoreToCamelCase(response) as T)
@@ -60,4 +83,19 @@ export const api = {
    * @returns Promise<PersonDetailResponse>
    */
   fetchPersonDetail: (personId: number, params: PersonDetailParams) => fetchFn<PersonDetailResponse>(`/person/${personId}`, objectToParams(camelCaseToUnderscore(params)))
+}
+
+export const neodbApi = {
+  /**
+   * 查询目录，支持 （电影、书籍、音乐等...）
+   * @param params CataLogSearchParams
+   * @returns Promise<CataLogSearchResponse>
+   */
+  fetchCatalog: (params: CataLogSearchParams) => fetchNeodbFn<CataLogSearchResponse>(`/catalog/search`, objectToParams(camelCaseToUnderscore(params))),
+  /**
+   * 查询书籍详情
+   * @param uuid string 
+   * @returns Promise<BookResponse>
+   */
+  fetchBook: (uuid: string) => fetchNeodbFn<BookResponse>(`/book/${uuid}`),
 }

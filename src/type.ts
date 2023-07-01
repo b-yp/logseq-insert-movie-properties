@@ -451,3 +451,165 @@ export interface PersonDetailResponse extends Person {
    */
   placeOfBirth: string
 }
+
+
+// --- NeoDB ---
+/**
+ * 分类枚举
+ */
+export enum Category {
+  Book = 'book',
+  Movie = 'movie',
+  TV = 'tv',
+  Music = 'music',
+  Game = 'game',
+  Podcast = 'podcast',
+  Performance = 'performance',
+}
+
+interface ExternalResource {
+  url: string
+}
+
+interface Catalog {
+  uuid: string
+  url: string
+  apiUrl: string
+  category: string
+  parentUuid: string
+  displayTitle: string
+  externalResources: ExternalResource[]
+  title: string
+  brief: string
+  coverImageUrl: string
+  rating: number
+  ratingCount: number
+}
+
+/**
+ * 目录查询参数
+ */
+export interface CataLogSearchParams {
+  query: string
+  page?: number
+  category?: Category
+}
+
+/**
+ * 目录查询响应
+ */
+export interface CataLogSearchResponse {
+  data: Catalog[]
+  pages: number
+  count: number
+}
+
+/**
+ * 书籍详情响应
+ */
+export interface BookResponse {
+  /**
+   * neodb uuid
+   */
+  uuid: string
+  /**
+   * neodb url
+   */
+  url: string
+  /**
+   * neodb api url
+   */
+  apiUrl: string
+  /**
+   * 分类 （枚举 Category）
+   */
+  category: string
+  /**
+   * 父级 uuid
+   */
+  parentUuid?: string
+  /**
+   * 显示标题
+   */
+  displayTitle: string
+  /**
+   * 外部资源
+   */
+  externalResources: ExternalResource[]
+  /**
+   * 标题j
+   */
+  title: string
+  /**
+   * 简介
+   */
+  brief: string
+  /**
+   * 封面图片
+   */
+  coverImageUrl: string
+  /**
+   * 平均评分
+   */
+  rating: number
+  /**
+   * 总评分
+   */
+  ratingCount: number
+  /**
+   * 副标题
+   */
+  subtitle: string
+  /**
+   * 原标题
+   */
+  origTitle: string
+  /**
+   * 作者
+   */
+  author: string[]
+  /**
+   * 译者
+   */
+  translator: string[]
+  /**
+   * 语言
+   */
+  language: string
+  /**
+   * 出版社
+   */
+  pubHouse: string
+  /**
+   * 出版年份
+   */
+  pubYear: number
+  /**
+   * 出版月份
+   */
+  pubMonth: number
+  /**
+   * 装帧
+   */
+  binding: string
+  /**
+   * 定价
+   */
+  price: string
+  /**
+   * 页数
+   */
+  pages: string
+  /**
+   * 系列、丛书
+   */
+  series: string
+  /**
+   * 出版社
+   */
+  imprint?: string
+  /**
+   * ISBN
+   */
+  isbn: string
+}

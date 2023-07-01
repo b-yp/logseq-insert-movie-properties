@@ -41,6 +41,13 @@ export const toUnderline = (str: string) => str.replace(/([A-Z])/g, "_$1").toLow
 export const toCamelCase = (str: string) => str.replace(/_(\w)/g, (match, letter) => letter.toUpperCase())
 
 /**
+ * 驼峰转中划线  (logseq 中 properties 为中划线)
+ * @param str string
+ * @returns string
+ */
+export const toKababCase = (str: string) => str.replace(/([A-Z])/g, "-$1").toLowerCase()
+
+/**
  * 下划线属性对象转驼峰属性对象
  * @param object 
  * @returns 
@@ -123,4 +130,17 @@ export const getGender = (value: number, language: string) => {
   }
 
   return gender
+}
+
+// 驼峰对象转中划线对象
+export const camelCaseToKababCase = (options: { [key: string]: string | number | null }): { [key: string]: string | number } => {
+  const object: { [key: string]: string | number } = {}
+  for (const key in options) {
+    if (options[key]) {
+      // TODO: 这里加了 if 了为什么里面 options[key] 的类型还包括 null?
+      // @ts-ignore
+      object[toKababCase(key)] = options[key]
+    }
+  }
+  return object
 }
