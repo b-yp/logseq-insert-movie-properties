@@ -2,9 +2,9 @@ import "@logseq/libs";
 
 import { logseq as PL } from "../package.json";
 
-import { api, imageUrl } from "./api";
-import { PersonDetailParams, PersonListsParams, SearchMoviesParams, movieCreditsParams, movieDetailParams } from "./type";
-import { getGender, objectToProperties } from "./utils";
+import { api, imageUrl, neodbApi } from "./api";
+import { PersonDetailParams, PersonListsParams, SearchMoviesParams, movieCreditsParams, movieDetailParams, Category } from "./type";
+import { camelCaseToKababCase, getGender, objectToProperties } from "./utils";
 import { settings } from "./settings";
 
 const pluginId = PL.id;
@@ -288,6 +288,54 @@ function main() {
     logseq.Editor.appendBlockInPage(page.uuid, personDetailRes.biography)
   }
 
+  // 插入书籍信息函数
+  const handleInsertBookMetadata = async () => {
+    const page = await logseq.Editor.getCurrentPage()
+
+    if (!page?.name) return
+
+    const bookCatalog = await neodbApi.fetchCatalog({
+      query: page.name,
+      category: Category.Book,
+    })
+
+    const uuid = bookCatalog.data[0].uuid
+    // 暂时不考虑返回列表供用户选择，默认直接取第一条
+    const book = await neodbApi.fetchBook(uuid)
+
+    // 要插入的书籍内容
+    const bookOptions: { [key: string]: string | number | null } = {
+      /**
+       * 特殊属性
+       * 将原名称和显示名称都设置为别名
+       */
+      alias: `#[[ ${book.origTitle} ]] #[[ ${book.displayTitle} ]]`,
+      title: book.title,
+      subTitle: book.subtitle,
+      coverImage: `![](${book.coverImageUrl}){:height 225, :width 150}`,
+      author: book.author.map(i => `#[[${i}]]`).join(' '),
+      translator: book.translator.map(i => `#[[${i}]]`).join(' '),
+      language: book.language,
+      isbn: book.isbn,
+      pubHouse: book.pubHouse,
+      pubYear: book.pubYear,
+      pubMonth: book.pubMonth,
+      price: book.price,
+      pages: book.pages,
+      binding: book.binding,
+      series: book.series,
+      imprint: book.imprint || '',
+      rating: book.rating,
+      ratingCount: book.ratingCount,
+      externalResources: book.externalResources.map(i => i.url).join(', '),
+      // brief: book.brief,
+    }
+
+    await logseq.Editor.prependBlockInPage(page.uuid, '', { properties: camelCaseToKababCase(bookOptions) })
+    // 简介另起一个 block 承载
+    logseq.Editor.appendBlockInPage(page.uuid, book.brief)
+  }
+
   // 插入英文电影信息菜单项
   logseq.App.registerPageMenuItem('Insert movie properties', () => insertMovieProperties('en-US'))
 
@@ -299,6 +347,9 @@ function main() {
 
   // 插入中文演员信息菜单项
   logseq.App.registerPageMenuItem('插入人物属性', () => insertPersonProperties('zh-CN'))
+
+  // 插入书籍信息
+  logseq.App.registerPageMenuItem('Insert book info', handleInsertBookMetadata)
 }
 
 logseq.ready(main).catch(console.error);
