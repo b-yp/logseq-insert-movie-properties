@@ -1,3 +1,11 @@
+# [1.2.0](https://github.com/b-yp/logseq-insert-movie-properties/compare/v1.1.0...v1.2.0) (2023-07-01)
+
+
+### Features
+
+* ✨ update README ([28788df](https://github.com/b-yp/logseq-insert-movie-properties/commit/28788df11addf8f3e1cec3c75718d8c2f5e86d15))
+* ✨ 支持导入图书信息 ([597c374](https://github.com/b-yp/logseq-insert-movie-properties/commit/597c374a1fd70ff9584d40ce3e7c9288bf7f5df6))
+
 # [1.1.0](https://github.com/b-yp/logseq-insert-movie-properties/compare/v1.0.0...v1.1.0) (2023-06-29)
 
 
