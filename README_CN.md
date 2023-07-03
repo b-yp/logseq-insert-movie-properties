@@ -1,3 +1,5 @@
+[English](./README.md) | 中文
+
 - # loseq-insert-movie-properties
 
   - > 在 [Logseq](https://logseq.com/) 中插入电影信息或演员信息的插件

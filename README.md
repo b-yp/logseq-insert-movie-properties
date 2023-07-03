@@ -1,3 +1,5 @@
+[中文](./README_CN.md) | English
+
 - # loseq-insert-movie-properties
 
   - > A plugin to insert movie information or actor information in [Logseq](https://logseq.com/) .
