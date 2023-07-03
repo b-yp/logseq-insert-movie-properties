@@ -1,4 +1,4 @@
-interface Person {
+type Person = {
   /**
    * 是否是成人
    */
@@ -37,7 +37,7 @@ interface Person {
 /**
  * 查询电影列表参数
  */
-export interface SearchMoviesParams {
+export type SearchMoviesParams = {
   /**
    * 电影名称
    */
@@ -71,7 +71,7 @@ export interface SearchMoviesParams {
 /**
  * 查询电影列表响应
  */
-export interface SearchMoviesResponse {
+export type SearchMoviesResponse = {
   /**
    * 电影列表
    */
@@ -114,7 +114,7 @@ export interface SearchMoviesResponse {
 /**
  * 查询电影详情参数
  */
-export interface movieDetailParams {
+export type movieDetailParams = {
   /**
    * 语言
    */
@@ -128,7 +128,7 @@ export interface movieDetailParams {
 /**
  * 查询电影详情响应
  */
-export interface movieDetailResponse {
+export type movieDetailResponse = {
   /**
    * 是否是成人内容
    */
@@ -287,14 +287,14 @@ export interface movieDetailResponse {
 /**
  * 查询制作人员信息参数
  */
-export interface movieCreditsParams {
+export type movieCreditsParams = {
   language?: string
 }
 
 /**
  * 查询制作人员信息响应
  */
-export interface movieCreditsResponse {
+export type movieCreditsResponse = {
   /**
    * movie id
    */
@@ -367,7 +367,7 @@ export interface movieCreditsResponse {
 /**
  * 查询人物列表参数
  */
-export interface PersonListsParams {
+export type PersonListsParams = {
   /**
    * 姓名 （包括昵称外号等其他名称）
    */
@@ -389,7 +389,7 @@ export interface PersonListsParams {
 /**
  * 查询人物列表响应
  */
-export interface PersonListsResponse {
+export type PersonListsResponse = {
   /**
    * 页数
    */
@@ -413,7 +413,7 @@ export interface PersonListsResponse {
 /**
  * 查询人物详情参数
  */
-export interface PersonDetailParams {
+export type PersonDetailParams = {
   appendToResponse?: string
   language?: string
 }
@@ -421,7 +421,7 @@ export interface PersonDetailParams {
 /**
  * 查询人物详情响应
  */
-export interface PersonDetailResponse extends Person {
+export type PersonDetailResponse = Person & {
   /**
    * 别名
    */
@@ -467,11 +467,11 @@ export enum Category {
   Performance = 'performance',
 }
 
-interface ExternalResource {
+type ExternalResource = {
   url: string
 }
 
-interface Catalog {
+type Catalog = {
   uuid: string
   url: string
   apiUrl: string
@@ -489,7 +489,7 @@ interface Catalog {
 /**
  * 目录查询参数
  */
-export interface CataLogSearchParams {
+export type CataLogSearchParams = {
   query: string
   page?: number
   category?: Category
@@ -498,7 +498,7 @@ export interface CataLogSearchParams {
 /**
  * 目录查询响应
  */
-export interface CataLogSearchResponse {
+export type CataLogSearchResponse = {
   data: Catalog[]
   pages: number
   count: number
@@ -507,7 +507,7 @@ export interface CataLogSearchResponse {
 /**
  * 书籍详情响应
  */
-export interface BookResponse {
+export type BookResponse = {
   /**
    * neodb uuid
    */
