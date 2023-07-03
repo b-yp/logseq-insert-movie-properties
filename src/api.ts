@@ -96,6 +96,7 @@ export const api = {
    * @returns Promise<TVDetailResponse>
    */
   fetchTVDetail: (seriesId: number, params: TVDetailParams) => fetchFn<TVDetailResponse>(`/tv/${seriesId}`),
+  fetchTVCredits: (seriesId: number, params: movieCreditsParams) => fetchFn<movieCreditsResponse>(`/tv/${seriesId}/credits`),
 }
 
 export const neodbApi = {

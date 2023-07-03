@@ -300,10 +300,29 @@ function main() {
 
     const TVDetailRes = await api.fetchTVDetail(TVId, { language })
 
+    // 查询电视剧工作人员列表
+    const TVCredits = await api.fetchTVCredits(TVId, { language })
+
+    /**
+     * 这里对演员处理一下，只取 (Acting)
+     */
+    const TVActors = TVCredits.cast.filter(c => c.knownForDepartment === 'Acting')
+
+    /**
+     * 这里要对全体工作人员处理一下，只取 导演 (Director) 、编剧 (Screenplay) ，不然列表太长爆炸了，而且别人可能也不会关心其他的
+     */
+    const TVDirectors = TVCredits.crew.filter(c => c.job === 'Director')
+    const TVScreenwriters = TVCredits.crew.filter(c => c.job === 'Screenplay')
+
     const TVPropertiesOptions = {
       /** 特殊属性 */
       alias: `#[[ ${TVDetailRes.originalName} ]]`,
       title: TVDetailRes.name,
+      /** --- */
+      directors: TVDirectors.map(d => `#[[${d.name}]]`).join(' '),
+      actors: TVActors.map(a => `#[[${a.name}]]`).join(' '),
+      screenWriters: TVScreenwriters.map(s => `#[[${s.name}]]`).join(' '),
+      /** --- */
       poster: `![](${imageUrl}/t/p/w600_and_h900_bestv2/${TVDetailRes.posterPath}){:height 225, :width 150}`,
       genres: TVDetailRes.genres.map(i => `#[[${i.name}]]`).join(' '),
       homepage: TVDetailRes.homepage,
