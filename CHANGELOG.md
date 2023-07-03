@@ -1,3 +1,16 @@
+# [1.3.0](https://github.com/b-yp/logseq-insert-movie-properties/compare/v1.2.0...v1.3.0) (2023-07-03)
+
+
+### Bug Fixes
+
+* update types ([14549ae](https://github.com/b-yp/logseq-insert-movie-properties/commit/14549ae7c82e1f88f39f36b73c497762e50632cc))
+
+
+### Features
+
+* ✨ 支持导入电视剧信息 ([2fe88a6](https://github.com/b-yp/logseq-insert-movie-properties/commit/2fe88a69344cc0f2e4078b4023aeac78019c6e90))
+* ✨ 支持导入电视剧工作人员信息 ([fe63c4f](https://github.com/b-yp/logseq-insert-movie-properties/commit/fe63c4fefcd42bc68990f7da85513b2ad2974fcd))
+
 # [1.2.0](https://github.com/b-yp/logseq-insert-movie-properties/compare/v1.1.0...v1.2.0) (2023-07-01)
 
 
