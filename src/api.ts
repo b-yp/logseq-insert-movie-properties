@@ -1,5 +1,5 @@
 import { camelCaseToUnderscore, objectToParams, underscoreToCamelCase } from "./utils";
-import { BookResponse, CataLogSearchParams, CataLogSearchResponse, PersonDetailParams, PersonDetailResponse, PersonListsParams, PersonListsResponse, SearchMoviesParams, SearchMoviesResponse, movieCreditsParams, movieCreditsResponse, movieDetailParams, movieDetailResponse } from "./type";
+import { BookResponse, CataLogSearchParams, CataLogSearchResponse, PersonDetailParams, PersonDetailResponse, PersonListsParams, PersonListsResponse, SearchMoviesParams, SearchMoviesResponse, TVDetailParams, TVDetailResponse, TVListParams, TVListResponse, movieCreditsParams, movieCreditsResponse, movieDetailParams, movieDetailResponse } from "./type";
 
 const apiBaseUrl = 'https://api.themoviedb.org/3';
 // const baseUrl = 'https://www.themoviedb.org'
@@ -82,7 +82,20 @@ export const api = {
    * @param params PersonDetailParams
    * @returns Promise<PersonDetailResponse>
    */
-  fetchPersonDetail: (personId: number, params: PersonDetailParams) => fetchFn<PersonDetailResponse>(`/person/${personId}`, objectToParams(camelCaseToUnderscore(params)))
+  fetchPersonDetail: (personId: number, params: PersonDetailParams) => fetchFn<PersonDetailResponse>(`/person/${personId}`, objectToParams(camelCaseToUnderscore(params))),
+  /**
+   * 查询电视剧列表
+   * @param params TVListParams
+   * @returns Promise<TVListResponse>
+   */
+  fetchTVList: (params: TVListParams) => fetchFn<TVListResponse>(`/search/tv`, objectToParams(camelCaseToUnderscore(params))),
+  /**
+   * 查询电视剧详情
+   * @param seriesId number
+   * @param params TVDetailParams
+   * @returns Promise<TVDetailResponse>
+   */
+  fetchTVDetail: (seriesId: number, params: TVDetailParams) => fetchFn<TVDetailResponse>(`/tv/${seriesId}`),
 }
 
 export const neodbApi = {
