@@ -3,7 +3,7 @@ import "@logseq/libs";
 import { logseq as PL } from "../package.json";
 
 import { api, imageUrl, neodbApi } from "./api";
-import { PersonDetailParams, PersonListsParams, SearchMoviesParams, movieCreditsParams, movieDetailParams, Category } from "./type";
+import { PersonDetailParams, PersonListsParams, SearchMoviesParams, movieCreditsParams, movieDetailParams, Category, TVDetailResponse } from "./type";
 import { camelCaseToKababCase, getGender, objectToProperties } from "./utils";
 import { settings } from "./settings";
 
@@ -193,6 +193,7 @@ function main() {
     logseq.Editor.prependBlockInPage(page.uuid, objectToProperties(moviePropertiesOptions, isEnglish))
   }
 
+  // 插入人物信息
   const insertPersonProperties = async (language: string) => {
     const page = await logseq.Editor.getCurrentPage()
 
@@ -247,7 +248,7 @@ function main() {
       profilePath: {
         en: 'profile',
         zh: '头像',
-        value: `![](${imageUrl}/t/p/w600_and_h900_bestv2/${personDetailRes.profilePath}){:height 225, :width 150}`, 
+        value: `![](${imageUrl}/t/p/w600_and_h900_bestv2/${personDetailRes.profilePath}){:height 225, :width 150}`,
       },
       placeOfBirth: {
         en: 'placeOfBirth',
@@ -286,6 +287,82 @@ function main() {
     await logseq.Editor.prependBlockInPage(page.uuid, objectToProperties(personPropertiesOptions, isEnglish))
     // 在此处插入人物简介
     logseq.Editor.appendBlockInPage(page.uuid, personDetailRes.biography)
+  }
+
+  // 插入电视剧信息 
+  const insertTVProperties = async (language: string) => {
+    const page = await logseq.Editor.getCurrentPage()
+    if (!page?.name) return
+
+    const TVListRes = await api.fetchTVList({ query: page.name, language })
+    // 暂时不考虑返回列表供用户选择，直接取第一条
+    const TVId = TVListRes.results[0].id
+
+    const TVDetailRes = await api.fetchTVDetail(TVId, { language })
+
+    // 查询电视剧工作人员列表
+    const TVCredits = await api.fetchTVCredits(TVId, { language })
+
+    /**
+     * 这里对演员处理一下，只取 (Acting)
+     */
+    const TVActors = TVCredits.cast.filter(c => c.knownForDepartment === 'Acting')
+
+    /**
+     * 这里要对全体工作人员处理一下，只取 导演 (Director) 、编剧 (Screenplay) ，不然列表太长爆炸了，而且别人可能也不会关心其他的
+     */
+    const TVDirectors = TVCredits.crew.filter(c => c.job === 'Director')
+    const TVScreenwriters = TVCredits.crew.filter(c => c.job === 'Screenplay')
+
+    const TVPropertiesOptions = {
+      /** 特殊属性 */
+      alias: `#[[ ${TVDetailRes.originalName} ]]`,
+      title: TVDetailRes.name,
+      /** --- */
+      directors: TVDirectors.map(d => `#[[${d.name}]]`).join(' '),
+      actors: TVActors.map(a => `#[[${a.name}]]`).join(' '),
+      screenWriters: TVScreenwriters.map(s => `#[[${s.name}]]`).join(' '),
+      /** --- */
+      poster: `![](${imageUrl}/t/p/w600_and_h900_bestv2/${TVDetailRes.posterPath}){:height 225, :width 150}`,
+      genres: TVDetailRes.genres.map(i => `#[[${i.name}]]`).join(' '),
+      homepage: TVDetailRes.homepage,
+      languages: TVDetailRes.languages.join(', '),
+      lastAirDate: TVDetailRes.lastAirDate,
+      numberOfSeasons: TVDetailRes.numberOfSeasons,
+      numberOfEpisodes: TVDetailRes.numberOfEpisodes,
+      originCountry: TVDetailRes.originCountry.join(', '),
+      originalLanguage: TVDetailRes.originalLanguage,
+      originalName: TVDetailRes.originalName,
+      popularity: TVDetailRes.popularity,
+      productionCompanies: TVDetailRes.productionCompanies.map(i => i.name).join(', '),
+      productionCountries: TVDetailRes.productionCountries.map(i => i.name).join(', '),
+      spokenLanguages: TVDetailRes.spokenLanguages.map(i => i.name).join(', '),
+      status: TVDetailRes.status,
+      tagline: TVDetailRes.tagline,
+      type: TVDetailRes.type,
+      voteAverage: TVDetailRes.voteAverage,
+      voteCount: TVDetailRes.voteCount,
+      backdrop: `![](${imageUrl}/t/p/w600_and_h900_bestv2/${TVDetailRes.backdropPath}){:height 225, :width 150}`,
+    }
+
+    await logseq.Editor.prependBlockInPage(page.uuid, '', { properties: camelCaseToKababCase(TVPropertiesOptions) })
+
+    // 在此处插入电视剧简介
+    await logseq.Editor.appendBlockInPage(page.uuid, TVDetailRes.overview)
+
+    // 插入电视剧季数
+    TVDetailRes.seasons.forEach(async i => {
+      const block = await logseq.Editor.appendBlockInPage(page.uuid, i.name)
+      if (!block?.uuid) return
+      logseq.Editor.insertBatchBlock(block?.uuid, [
+        { content: `${language === 'en-US' ? 'name: ' : '名称：'}${i.name}` },
+        { content: `${language === 'en-US' ? 'air date: ' : '上映日期：'}${i.airDate}` },
+        { content: `${language === 'en-US' ? 'episode count: ' : '集数：'}${i.episodeCount}` },
+        { content: `${language === 'en-US' ? 'season count: ' : '季数：'}${i.seasonNumber}` },
+        { content: `${language === 'en-US' ? 'vote average: ' : '评分：'}${i.voteAverage}` },
+        { content: `![](${imageUrl}/t/p/w600_and_h900_bestv2/${i.posterPath}){:height 225, :width 150}` }
+      ], { sibling: false })
+    })
   }
 
   // 插入书籍信息函数
@@ -347,6 +424,9 @@ function main() {
 
   // 插入中文演员信息菜单项
   logseq.App.registerPageMenuItem('插入人物属性', () => insertPersonProperties('zh-CN'))
+
+  logseq.App.registerPageMenuItem('Insert TV properties', () => insertTVProperties('en-US'))
+  logseq.App.registerPageMenuItem('插入电视剧属性', () => insertTVProperties('zh-CN'))
 
   // 插入书籍信息
   logseq.App.registerPageMenuItem('Insert book info', handleInsertBookMetadata)
