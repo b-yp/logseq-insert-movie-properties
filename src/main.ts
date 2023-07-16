@@ -16,7 +16,17 @@ function main() {
   logseq.useSettingsSchema(settings)
 
   // 获取设置的属性语言
+  // 设置项已经注释掉了，直接用英文做属性就好了
   const isEnglish = logseq.settings ? logseq.settings['properties_language'] : true
+  const emojiPrefix = logseq.settings ? logseq.settings['emoji_prefix'] : '🤡'
+
+  const isInsertMoviePropertiesEn = logseq.settings ? logseq.settings['insert_movie_properties_en'] : true
+  const isInsertMoviePropertiesZh = logseq.settings ? logseq.settings['insert_movie_properties_zh'] : true
+  const isInsertPersonPropertiesEn = logseq.settings ? logseq.settings['insert_person_properties_en'] : true
+  const isInsertPersonPropertiesZh = logseq.settings ? logseq.settings['insert_person_properties_zh'] : true
+  const isInsertTvPropertiesEn = logseq.settings ? logseq.settings['insert_tv_properties_en'] : true
+  const isInsertTvPropertiesZh = logseq.settings ? logseq.settings['insert_tv_properties_zh'] : true
+  const isInsertBookInfo = logseq.settings ? logseq.settings['insert_book_info'] : true
 
   // 插入电影信息
   const insertMovieProperties = async (language: string) => {
@@ -414,22 +424,22 @@ function main() {
   }
 
   // 插入英文电影信息菜单项
-  logseq.App.registerPageMenuItem('Insert movie properties', () => insertMovieProperties('en-US'))
+  isInsertMoviePropertiesEn && logseq.App.registerPageMenuItem(`${emojiPrefix}: Insert movie properties`, () => insertMovieProperties('en-US'))
 
   // 插入中文电影信息菜单项
-  logseq.App.registerPageMenuItem('插入电影属性', () => insertMovieProperties('zh-CN'))
+  isInsertMoviePropertiesZh && logseq.App.registerPageMenuItem(`${emojiPrefix}: 插入电影属性`, () => insertMovieProperties('zh-CN'))
 
   // 插入英文演员信息菜单项
-  logseq.App.registerPageMenuItem('Insert person properties', () => insertPersonProperties('en-US'))
+  isInsertPersonPropertiesEn && logseq.App.registerPageMenuItem(`${emojiPrefix}: Insert person properties`, () => insertPersonProperties('en-US'))
 
   // 插入中文演员信息菜单项
-  logseq.App.registerPageMenuItem('插入人物属性', () => insertPersonProperties('zh-CN'))
+  isInsertPersonPropertiesZh && logseq.App.registerPageMenuItem(`${emojiPrefix}: 插入人物属性`, () => insertPersonProperties('zh-CN'))
 
-  logseq.App.registerPageMenuItem('Insert TV properties', () => insertTVProperties('en-US'))
-  logseq.App.registerPageMenuItem('插入电视剧属性', () => insertTVProperties('zh-CN'))
+  isInsertTvPropertiesEn && logseq.App.registerPageMenuItem(`${emojiPrefix}: Insert TV properties`, () => insertTVProperties('en-US'))
+  isInsertTvPropertiesZh && logseq.App.registerPageMenuItem(`${emojiPrefix}: 插入电视剧属性`, () => insertTVProperties('zh-CN'))
 
   // 插入书籍信息
-  logseq.App.registerPageMenuItem('Insert book info', handleInsertBookMetadata)
+  isInsertBookInfo && logseq.App.registerPageMenuItem(`${emojiPrefix}: Insert book info`, handleInsertBookMetadata)
 }
 
 logseq.ready(main).catch(console.error);
