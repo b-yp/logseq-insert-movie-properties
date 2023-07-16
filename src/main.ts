@@ -15,9 +15,6 @@ function main() {
   // 注册设置项
   logseq.useSettingsSchema(settings)
 
-  // 获取设置的属性语言
-  // 设置项已经注释掉了，直接用英文做属性就好了
-  const isEnglish = logseq.settings ? logseq.settings['properties_language'] : true
   const emojiPrefix = logseq.settings ? logseq.settings['emoji_prefix'] : '🤡'
 
   const isInsertMoviePropertiesEn = logseq.settings ? logseq.settings['insert_movie_properties_en'] : true
@@ -97,7 +94,7 @@ function main() {
         value: movieDirectors.map(d => `#[[${d.name}]]`).join(' '),
       },
       screenWriters: {
-        en: 'screenWriters',
+        en: 'screen-writers',
         zh: '编剧',
         value: movieScreenwriters.map(s => `#[[${s.name}]]`).join(' '),
       },
@@ -112,24 +109,24 @@ function main() {
         value: `![](${imageUrl}/t/p/w600_and_h900_bestv2/${movieDetailRes.posterPath}){:height 225, :width 150}`,
       },
       originalTitle: {
-        en: 'originalTitle',
+        en: 'original-title',
         zh: '原始名称',
         value: movieDetailRes.originalTitle
       },
       originalLanguage: {
-        en: 'originalLanguage',
+        en: 'original-language',
         zh: '原始语言',
         value: movieDetailRes.originalLanguage
       },
       releaseDate: {
-        en: 'releaseDate',
+        en: 'release-date',
         zh: '上映日期',
         value: movieDetailRes.releaseDate
       },
       runtime: {
         en: 'runtime',
         zh: '时长',
-        value: `${movieDetailRes.runtime} ${isEnglish ? 'minute' : '分钟'}`
+        value: `${movieDetailRes.runtime} minutes`
       },
       genres: {
         en: 'genres',
@@ -137,7 +134,7 @@ function main() {
         value: movieDetailRes.genres.map(i => (`#${i.name}`)).join(' '),
       },
       spokenLanguages: {
-        en: 'spokenLanguages',
+        en: 'spoken-languages',
         zh: '语言',
         value: movieDetailRes.spokenLanguages.map(i => (`#${i.name}`)).join(' '),
       },
@@ -177,12 +174,12 @@ function main() {
         value: movieDetailRes.imdbId
       },
       productionCompanies: {
-        en: 'productionCompanies',
+        en: 'production_companies',
         zh: '制作公司',
         value: movieDetailRes.productionCompanies.map(i => (`#[[${i.name}]]`)).join(' '),
       },
       productionCountries: {
-        en: 'productionCountries',
+        en: 'production_countries',
         zh: '制片国家',
         value: movieDetailRes.productionCountries.map(i => (`#[[${i.name}]]`)).join(' '),
       },
@@ -200,7 +197,7 @@ function main() {
      * 插入属性块还有另一种写法: logseq.Editor.prependBlockInPage(page.uuid, '', { properties: { ... } })
      * 我这里就不改了，感觉区别不大
      */
-    logseq.Editor.prependBlockInPage(page.uuid, objectToProperties(moviePropertiesOptions, isEnglish))
+    logseq.Editor.prependBlockInPage(page.uuid, objectToProperties(moviePropertiesOptions))
   }
 
   // 插入人物信息
@@ -261,7 +258,7 @@ function main() {
         value: `![](${imageUrl}/t/p/w600_and_h900_bestv2/${personDetailRes.profilePath}){:height 225, :width 150}`,
       },
       placeOfBirth: {
-        en: 'placeOfBirth',
+        en: 'place-of-birth',
         zh: '出生地',
         value: personDetailRes.placeOfBirth
       },
@@ -294,7 +291,7 @@ function main() {
     }
 
     // 查询到人员详情，使用 logseq API 更新到页面
-    await logseq.Editor.prependBlockInPage(page.uuid, objectToProperties(personPropertiesOptions, isEnglish))
+    await logseq.Editor.prependBlockInPage(page.uuid, objectToProperties(personPropertiesOptions))
     // 在此处插入人物简介
     logseq.Editor.appendBlockInPage(page.uuid, personDetailRes.biography)
   }

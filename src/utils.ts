@@ -97,10 +97,10 @@ export const objectToProperties = (object: {
     zh: string
     value: string | number | null
   }
-}, isEnglish: boolean): string => {
+}): string => {
   const result = []
-  for (const key  in object) {
-    const k = isEnglish ? object[key].en : object[key].zh
+  for (const key in object) {
+    const k = object[key].en
     // TODO: 这里要过滤掉 value 为空的属性，但暂时留着，便于调试
     result.push(`${k}:: ${object[key].value || '🤡'}`)
   }
