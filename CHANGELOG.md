@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/b-yp/logseq-insert-movie-properties/compare/v1.5.0...v1.6.0) (2023-07-16)
+
+
+### Features
+
+* Support configuration of menu item visibility and menu prefix ([a26ac2b](https://github.com/b-yp/logseq-insert-movie-properties/commit/a26ac2b0e510aac09460bea1b3e4dbff0d38328b))
+
 # [1.5.0](https://github.com/b-yp/logseq-insert-movie-properties/compare/v1.4.0...v1.5.0) (2023-07-03)
 
 
