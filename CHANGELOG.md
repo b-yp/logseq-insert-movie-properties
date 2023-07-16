@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/b-yp/logseq-insert-movie-properties/compare/v1.6.0...v1.6.1) (2023-07-16)
+
+
+### Bug Fixes
+
+* Removing Chinese characters and standardizing attribute writing ([b6edb4c](https://github.com/b-yp/logseq-insert-movie-properties/commit/b6edb4cb00f8dc96d5644a17b0e79289966f149b))
+
 # [1.6.0](https://github.com/b-yp/logseq-insert-movie-properties/compare/v1.5.0...v1.6.0) (2023-07-16)
 
 
