@@ -107,31 +107,6 @@ export const objectToProperties = (object: {
   return result.join('\n')
 }
 
-export const getGender = (value: number, language: string) => {
-  let gender: string
-  if (value === 1) {
-    if (language === 'zh-CN') {
-      gender = '女'
-    } else {
-      gender = 'Girl'
-    }
-  } else if (value === 2) {
-    if (language === 'zh-CN') {
-      gender = '男'
-    } else {
-      gender = 'Boy'
-    }
-  } else {
-    if (language === 'zh-CN') {
-      gender = '未知'
-    } else {
-      gender = 'Unknown'
-    }
-  }
-
-  return gender
-}
-
 // 驼峰对象转中划线对象
 export const camelCaseToKababCase = (options: { [key: string]: string | number | null }): { [key: string]: string | number } => {
   const object: { [key: string]: string | number } = {}
