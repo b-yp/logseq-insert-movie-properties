@@ -1,3 +1,15 @@
+# [1.7.0](https://github.com/b-yp/logseq-insert-movie-properties/compare/v1.6.1...v1.7.0) (2023-07-18)
+
+
+### Bug Fixes
+
+* Fix build failed ([df73d3a](https://github.com/b-yp/logseq-insert-movie-properties/commit/df73d3a49ec9c1a1b3242d871ae766a84de94d43))
+
+
+### Features
+
+* Add a selection list ([eaffbad](https://github.com/b-yp/logseq-insert-movie-properties/commit/eaffbadd97d2df1c0d164f6285cc226b2e34c0f5))
+
 ## [1.6.1](https://github.com/b-yp/logseq-insert-movie-properties/compare/v1.6.0...v1.6.1) (2023-07-16)
 
 
