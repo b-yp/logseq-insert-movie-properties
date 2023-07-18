@@ -10,11 +10,13 @@
   - 在电影页面插入该电影的信息作为页面属性，支持英文和中文
     - ![en-img](./assets/en.jpg)
     - ![zh-img](./assets/zh.jpg)
+    - ![tv list](./assets/tv-list.png)
   - 在演员页面插入该演员的信息作为页面属性，支持英文和中文
     - ![en-person](./assets/en-person.jpg)
     - ![zh-person](./assets/zh-person.jpg)
   - 插入书籍信息作为页面属性
     - ![book](./assets/book.jpg)
+    - ![book list](./assets/book-list.png)
 
 - ## 演示
 
