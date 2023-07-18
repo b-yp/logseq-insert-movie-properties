@@ -1,3 +1,5 @@
+export type ArrayElementType<T> = T extends (infer U)[] ? U : never;
+
 type Person = {
   /**
    * 是否是成人
@@ -96,6 +98,14 @@ export type SearchMoviesResponse = {
      * 电影名称
      */
     title: string
+    /**
+     * 海报
+     */
+    posterPath: string
+    /**
+     * 发行日期
+     */
+    releaseDate: string
   }[]
   /**
    * 页数
@@ -677,6 +687,13 @@ type Catalog = {
   coverImageUrl: string
   rating: number
   ratingCount: number
+  isbn: string
+  series: string
+  pages: number
+  pubHouse: string
+  author: string[]
+  pubYear: number
+  pubMonth: number
 }
 
 /**

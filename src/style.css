@@ -1,0 +1,108 @@
+.logseq-insert-movie-properties-main {
+  width: 98vw;
+  height: 98vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.logseq-insert-movie-properties-main > .modal {
+  padding: 12px;
+  background-color: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-left: 246px; /* 246 px 是侧边栏的宽度 */
+}
+
+.logseq-insert-movie-properties-main > .modal > .list {
+  width: 500px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.logseq-insert-movie-properties-main > .modal > .list > .list-item {
+  background-color: #fff;
+  display: flex;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.logseq-insert-movie-properties-main > .modal > .list > .list-item:hover {
+  background-color: #eee;
+}
+
+.logseq-insert-movie-properties-main > .modal > .list > .list-item > .image {
+  width: 94px;
+  height: 141px;
+}
+
+.logseq-insert-movie-properties-main
+  > .modal
+  > .list
+  > .list-item
+  > .image
+  > img {
+  width: 100%;
+  height: 100%;
+}
+
+.logseq-insert-movie-properties-main > .modal > .list > .list-item > .info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.logseq-insert-movie-properties-main
+  > .modal
+  > .list
+  > .list-item
+  > .info
+  > .title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.logseq-insert-movie-properties-main
+  > .modal
+  > .list
+  > .list-item
+  > .info
+  > .title
+  > .name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #000;
+}
+
+.logseq-insert-movie-properties-main
+  > .modal
+  > .list
+  > .list-item
+  > .info
+  > .title
+  .date,
+.logseq-insert-movie-properties-main
+  > .modal
+  > .list
+  > .list-item
+  > .info
+  > .title
+  .gender,
+.logseq-insert-movie-properties-main
+  > .modal
+  > .list
+  > .list-item
+  > .info
+  > .title
+  .author {
+  color: #999;
+}
