@@ -15,7 +15,7 @@ import {
   CataLogSearchResponse,
   ArrayElementType,
 } from "./type";
-import { camelCaseToKababCase, getGender, objectToProperties } from "./utils";
+import { camelCaseToKababCase, objectToProperties } from "./utils";
 import { Lang, Language, languages } from "./constants";
 
 import "./style.css";
@@ -439,7 +439,7 @@ const App = () => {
       gender: {
         en: "gender",
         zh: "性别",
-        value: getGender(personDetailRes.gender, language),
+        value: getGender(personDetailRes.gender),
       },
       birthday: {
         en: "birthday",
