@@ -322,13 +322,13 @@ const App = () => {
       genres: {
         en: "genres",
         zh: "类型",
-        value: movieDetailRes.genres.map((i) => `#${i.name}`).join(" "),
+        value: movieDetailRes.genres.map((i) => `#[[${i.name}]]`).join(" "),
       },
       spokenLanguages: {
         en: "spoken-languages",
         zh: "语言",
         value: movieDetailRes.spokenLanguages
-          .map((i) => `#${i.name}`)
+          .map((i) => `#[[${i.name}]]`)
           .join(" "),
       },
       status: {
