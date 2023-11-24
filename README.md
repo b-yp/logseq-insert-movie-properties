@@ -11,11 +11,13 @@
   - Insert movie information on the movie page as page properties, supporting both English and Chinese.
     - ![en-img](./assets/en.jpg)
     - ![zh-img](./assets/zh.jpg)
+    - ![tv list](./assets/tv-list.png)
   - Insert actor information on the actor page as page properties, supporting both English and Chinese.
     - ![en-person](./assets/en-person.jpg)
     - ![zh-person](./assets/zh-person.jpg)
   - Insert book information as a page properties
     - ![](./assets/book.jpg)
+    - ![book list](./assets/book-list.png)
 
 - ## Demos
 
