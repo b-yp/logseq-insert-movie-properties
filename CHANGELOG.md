@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/b-yp/logseq-insert-movie-properties/compare/v1.7.0...v1.7.1) (2023-11-24)
+
+
+### Bug Fixes
+
+* Fix genres tags ([71e45f5](https://github.com/b-yp/logseq-insert-movie-properties/commit/71e45f5c53131ba82ba1fc6e36381721e87727e9))
+
 # [1.7.0](https://github.com/b-yp/logseq-insert-movie-properties/compare/v1.6.1...v1.7.0) (2023-07-18)
 
 
